@@ -1,7 +1,7 @@
 {
   "name": "react-native-motion-activity",
   "title": "React Native Motion Activity",
-  "version": "1.0.1",
+  "version": "0.1.0",
   "description": "React Native Motion Activity events",
   "main": "index.js",
   "scripts": {
