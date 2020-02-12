@@ -93,14 +93,4 @@ RCT_REMAP_METHOD(getAuthorisationStatus,
     [self sendEventWithName:@"activity_update" body: data];
 }
 
-
-//RCT_REMAP_METHOD(getActivities,
-//                 fromDate: (NSDate *)from
-//                 toDate: (NSDate *)to
-//                 withAuthorizedResolver:(RCTPromiseResolveBlock)resolve
-//                 andAuthorizedRejecter:(RCTPromiseRejectBlock)reject)
-//{
-//    resolve(@[]);
-//}
-
 @end

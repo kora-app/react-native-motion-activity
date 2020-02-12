@@ -13,7 +13,7 @@ export const Confidence = {
 
 const eventEmitter = new NativeEventEmitter(MotionActivity);
 
-export const getUpdates = (callback) => {
+export const subscribe = (callback) => {
     const subscription = eventEmitter.addListener('activity_update', callback);
 
     return () => {
