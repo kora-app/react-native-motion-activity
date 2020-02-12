@@ -20,5 +20,5 @@ declare module 'react-native-motion-activity' {
 
     export function getAuthorisationStatus(): Promise<Status>
 
-    export function getUpdates(callback: (activities: ReadonlyArray<Activity>) => void): () => void;
+    export function getUpdates(callback: (activities: Activity) => void): () => void;
 }
