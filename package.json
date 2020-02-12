@@ -1,0 +1,46 @@
+{
+  "name": "react-native-motion-activity",
+  "title": "React Native Motion Activity",
+  "version": "1.0.0",
+  "description": "React Native Motion Activity events",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kora-app/react-native-motion-activity.git",
+    "baseUrl": "https://github.com/kora-app/react-native-motion-activity"
+  },
+  "keywords": [
+    "react-native"
+  ],
+  "author": {
+    "name": "Arturs Vonda",
+    "email": "arturs@kora.app"
+  },
+  "contributors": [
+    {
+      "name": "Arturs Vonda",
+      "email": "arturs@kora.app"
+    }
+  ],
+  "license": "MIT",
+  "licenseFilename": "LICENSE",
+  "readmeFilename": "README.md",
+  "files": [
+    "/android",
+    "!/android/build",
+    "/ios",
+    "/js",
+    "/*.podspec"
+  ],
+  "peerDependencies": {
+    "react": "^16.9.0",
+    "react-native": ">=0.61.0 <1.0.x"
+  },
+  "devDependencies": {
+    "react": "^16.9.0",
+    "react-native": "^0.61.0"
+  }
+}
