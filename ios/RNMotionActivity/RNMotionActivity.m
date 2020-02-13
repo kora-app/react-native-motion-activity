@@ -5,6 +5,7 @@
 @interface RNMotionActivity()
     
 @property (nonatomic, strong) CMMotionActivityManager *motionActivityManager;
+@property (nonatomic, strong) NSISO8601DateFormatter *dateFormatter;
 
 @end
 
@@ -22,6 +23,7 @@
     self = [super init];
     if (self) {
         self.motionActivityManager = [[CMMotionActivityManager alloc] init];
+        self.dateFormatter = [[NSISO8601DateFormatter alloc] init];
     }
     return self;
 }
@@ -58,6 +60,21 @@ RCT_EXPORT_MODULE(MotionActivity);
     }
 }
 
+- (NSDictionary *)convertActivityToMap: (CMMotionActivity *) activity API_AVAILABLE(ios(11.0)) {
+    return @{
+        @"automotive": @(activity.automotive),
+        @"confidence": @(activity.confidence),
+        @"cycling": @(activity.cycling),
+        @"running": @(activity.running),
+        @"startDate": [self.dateFormatter stringFromDate:activity.startDate],
+        @"stationary": @(activity.stationary),
+        @"unknown": @(activity.unknown),
+        @"walking": @(activity.walking),
+        @"timestamp": [self.dateFormatter stringFromDate:[NSDate date]],
+    };
+}
+
+
 RCT_REMAP_METHOD(getAuthorisationStatus,
                  withAuthorizedResolver:(RCTPromiseResolveBlock)resolve
                  andAuthorizedRejecter:(RCTPromiseRejectBlock)reject)
@@ -72,6 +89,32 @@ RCT_REMAP_METHOD(getAuthorisationStatus,
     }
 }
 
+
+RCT_REMAP_METHOD(queryActivities,
+                 fromDate: (NSDate *)fromDate
+                 toDate: (NSDate *)toDate
+                 withAuthorizedResolver:(RCTPromiseResolveBlock)resolve
+                 andAuthorizedRejecter:(RCTPromiseRejectBlock)reject)
+{
+    if (@available(iOS 11.0, *)) {
+        [self.motionActivityManager queryActivityStartingFromDate:fromDate toDate:toDate toQueue:[NSOperationQueue mainQueue] withHandler:^(NSArray<CMMotionActivity *> * _Nullable activities, NSError * _Nullable error) {
+            if (error) {
+                [RNMotionActivityError handleRejectBlock: reject error: error];
+            } else {
+                NSMutableArray *data = [NSMutableArray arrayWithCapacity:[activities count]];
+                [activities enumerateObjectsUsingBlock:^(CMMotionActivity * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                    [data addObject:[self convertActivityToMap:obj]];
+                }];
+                
+                resolve(data);
+            }
+        }];
+    } else {
+        NSError *error = [RNMotionActivityError createErrorWithCode:ErrorUnavailable andDescription: RCT_ERROR_UNAVAILABLE];
+        [RNMotionActivityError handleRejectBlock: reject error: error];
+    }
+}
+
 - (NSArray<NSString *> *)supportedEvents
 {
     return @[@"activity_update"];
@@ -79,16 +122,7 @@ RCT_REMAP_METHOD(getAuthorisationStatus,
 
 - (void)motionActivityReceived:(CMMotionActivity *) activity
 {
-    NSDictionary *data = @{
-        @"automotive": @(activity.automotive),
-        @"confidence": @(activity.confidence),
-        @"cycling": @(activity.cycling),
-        @"running": @(activity.running),
-        @"startDate": activity.startDate,
-        @"stationary": @(activity.stationary),
-        @"unknown": @(activity.unknown),
-        @"walking": @(activity.walking),
-    };
+    NSDictionary *data = [self convertActivityToMap:activity];
 
     [self sendEventWithName:@"activity_update" body: data];
 }

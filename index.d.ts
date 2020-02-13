@@ -16,9 +16,12 @@ declare module 'react-native-motion-activity' {
         stationary: boolean;
         unknown: boolean;
         walking: boolean;
+        timestamp: Date | undefined;
     }
 
     export function getAuthorisationStatus(): Promise<Status>
 
     export function subscribe(callback: (activities: Activity) => void): () => void;
+
+    export function queryActivities(from: Date, to: Date): Promise<ReadonlyArray<Activity>>;
 }

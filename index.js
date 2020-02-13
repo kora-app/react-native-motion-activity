@@ -22,3 +22,14 @@ export const subscribe = (callback) => {
 };
 
 export const getAuthorisationStatus = MotionActivity.getAuthorisationStatus;
+
+export const queryActivities = async (from, to) => {
+    if (!(from instanceof Date)) {
+        throw new Error('Missing `from` date in queryActivities')
+    }
+    if (!(to instanceof Date)) {
+        throw new Error('Missing `to` date in queryActivities')
+    }
+
+    return MotionActivity.queryActivities(from.getTime(), to.getTime());
+};
