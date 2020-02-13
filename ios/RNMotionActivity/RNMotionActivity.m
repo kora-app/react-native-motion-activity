@@ -82,7 +82,7 @@ RCT_REMAP_METHOD(getAuthorisationStatus,
     if (@available(iOS 11.0, *)) {
         CMAuthorizationStatus status = [CMMotionActivityManager authorizationStatus];
 
-        resolve(@[[self convertStatusToString: status]]);
+        resolve([self convertStatusToString: status]);
     } else {
         NSError *error = [RNMotionActivityError createErrorWithCode:ErrorUnavailable andDescription: RCT_ERROR_UNAVAILABLE];
         [RNMotionActivityError handleRejectBlock: reject error: error];
